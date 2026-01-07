@@ -20,14 +20,14 @@ export default function Lights() {
     <>
       {/* Ambient light for overall scene illumination */}
       {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
-      <ambientLight intensity={0.4} color="#ffffff" />
+      <ambientLight intensity={0.8} color="#ffffff" />
 
       {/* Main directional light source */}
       {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       <directionalLight
         ref={mainLightRef}
         position={[10, 15, 10]}
-        intensity={1}
+        intensity={2}
         castShadow
         color="#ffffff"
         shadow-mapSize-width={2048}
@@ -44,8 +44,16 @@ export default function Lights() {
       {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       <directionalLight
         position={[-5, 10, -5]}
-        intensity={0.3}
+        intensity={0.8}
         color="#ffffff"
+      />
+
+      {/* Hemisphere light for better ambient lighting */}
+      {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
+      <hemisphereLight
+        intensity={0.5}
+        color="#ffffff"
+        groundColor="#444444"
       />
     </>
   );

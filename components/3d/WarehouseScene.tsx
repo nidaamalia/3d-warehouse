@@ -73,6 +73,7 @@ export default function WarehouseScene() {
       onCreated={(state) => {
         console.log('Canvas created successfully');
         const canvas = state.gl.domElement as HTMLCanvasElement;
+        state.gl.setClearColor('#2d3748', 1);
         
         canvas.addEventListener('webglcontextlost', (event) => {
           console.warn('WebGL context lost - attempting recovery');
