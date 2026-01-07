@@ -51,6 +51,9 @@ export default function Rack({ name, position, items }: RackProps) {
           <Item
             key={item.serialNo}
             serialNo={item.serialNo}
+            lot={item.lot}
+            description={item.description}
+            condition={item.condition}
             color={item.color}
             position={itemPosition}
           />
