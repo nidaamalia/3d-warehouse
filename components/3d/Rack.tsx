@@ -2,12 +2,14 @@
 
 import { Text } from '@react-three/drei';
 import RackStructure from './RackStructure';
-import type { Item } from '@/types/warehouse';
+import Item from './Item';
+import { calculateItemPosition } from '@/lib/utils';
+import type { Item as ItemType } from '@/types/warehouse';
 
 interface RackProps {
   name: string;
   position: [number, number, number];
-  items: Item[];
+  items: ItemType[];
 }
 
 /**
@@ -34,7 +36,18 @@ export default function Rack({ name, position, items }: RackProps) {
       {/* Rack Structure */}
       <RackStructure />
 
-      {/* Items will be rendered here */}
+      {/* Items on Rack */}
+      {items.map((item) => {
+        const itemPosition = calculateItemPosition(item.position);
+        return (
+          <Item
+            key={item.serialNo}
+            serialNo={item.serialNo}
+            color={item.color}
+            position={itemPosition}
+          />
+        );
+      })}
     </group>
   );
 }

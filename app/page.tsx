@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useWarehouseStore } from '@/store/warehouseStore';
 import WarehouseScene from '@/components/3d/WarehouseScene';
+import ItemConditionLegend from '@/components/ui/ItemConditionLegend';
 
 export default function Home() {
   const { isLoading, error, loadData } = useWarehouseStore();
@@ -40,8 +41,9 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen w-screen bg-slate-950">
+    <div className="relative h-screen w-screen bg-slate-950">
       <WarehouseScene />
+      <ItemConditionLegend />
     </div>
   );
 }

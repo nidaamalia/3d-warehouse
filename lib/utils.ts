@@ -16,32 +16,36 @@ export function cn(...classes: ClassValue[]): string {
 }
 
 /**
- * Calculate 3D position of item on rack shelf
- * @param rackCoordinate - Base coordinate of rack [x, y, z]
- * @param itemPosition - Grid position {x: column (0-2), y: shelf (1-3)}
- * @returns 3D position [x, y, z] for the item
+ * Calculate RELATIVE position of item within rack group
+ * Returns position relative to rack's origin (0,0,0), not world coordinates
+ * 
+ * @param itemPosition - Grid position on rack {x: column (0-2), y: shelf (1-3)}
+ * @returns RELATIVE position [x, y, z] within rack group
+ * 
+ * @example
+ * // Item at column 1, shelf 2 (center column, middle shelf)
+ * calculateItemPosition({x: 1, y: 2})
+ * // Returns: [0, 1.475, 0] (relative to rack center)
  */
 export function calculateItemPosition(
-  rackCoordinate: [number, number, number],
   itemPosition: { x: number; y: number }
 ): [number, number, number] {
-  const [rackX, rackY, rackZ] = rackCoordinate;
-  
-  // Map logical shelf numbers (1-3) to actual 3D heights
+  // Shelf heights RELATIVE to rack base (matching RackStructure)
+  // Add 0.175 to place item ON TOP of shelf (shelf at y, thickness 0.05, item height 0.3)
   const shelfHeights: Record<number, number> = {
-    0: 0.35,  // Shelf 0 (rarely used)
-    1: 0.85,  // Shelf 1 (bottom) - matches data y=1
-    2: 1.35,  // Shelf 2 (middle) - matches data y=2
-    3: 1.85   // Shelf 3 (top) - matches data y=3
+    0: 0.475,  // Shelf at 0.3 + item offset
+    1: 0.975,  // Shelf at 0.8 + item offset
+    2: 1.475,  // Shelf at 1.3 + item offset
+    3: 1.975   // Shelf at 1.8 + item offset
   };
   
-  // Calculate column position (0, 1, 2 → left, center, right)
-  // Rack is 2.0 units wide, columns spaced at 0.65 apart
+  // Column positions RELATIVE to rack center (rack is 2.0 units wide)
+  // 3 columns: left (-0.65), center (0), right (+0.65)
   const columnOffset = (itemPosition.x - 1) * 0.65;
   
   return [
-    rackX + columnOffset,                    // X: rack base + column offset
-    shelfHeights[itemPosition.y] || 0.85,    // Y: shelf height
-    rackZ                                     // Z: same as rack depth
+    columnOffset,                          // X: relative to rack center
+    shelfHeights[itemPosition.y] || 0.975, // Y: shelf height from rack base
+    0                                       // Z: items don't go front/back (same as rack center)
   ];
 }
