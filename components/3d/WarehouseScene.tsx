@@ -5,6 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import Lights from './Lights';
 import Ground from './Ground';
+import RackGroup from './RackGroup';
 import DebugHelpers from './DebugHelpers';
 
 /**
@@ -56,7 +57,7 @@ export default function WarehouseScene() {
     <Canvas
       key={retryCount}
       camera={{
-        position: [15, 15, 15],
+        position: [18, 16, 18],
         fov: 50,
       }}
       shadows
@@ -90,6 +91,7 @@ export default function WarehouseScene() {
       <Lights />
       
       <OrbitControls
+        target={[-2, 0, -2]}
         enableDamping
         dampingFactor={0.05}
         minDistance={5}
@@ -99,9 +101,9 @@ export default function WarehouseScene() {
       
       <Ground />
       
-      <DebugHelpers />
+      <RackGroup />
       
-      {/* Racks will be added here */}
+      <DebugHelpers />
     </Canvas>
   );
 }

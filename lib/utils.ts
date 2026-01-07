@@ -16,32 +16,32 @@ export function cn(...classes: ClassValue[]): string {
 }
 
 /**
- * Calculates the actual 3D position of an item in the warehouse scene
- * based on the rack's coordinate and the item's logical grid position
- *
- * The calculation uses the following logic:
- * - X (column): rackCoord[0] + (itemPos.x * 0.4) - 0.4
- *   Places items horizontally with 0.4 unit spacing, offset by -0.4
- * - Y (row/shelf): itemPos.y * 0.6 + 0.3
- *   Places items vertically with 0.6 unit spacing between shelves
- * - Z (depth): rackCoord[2]
- *   Items maintain the rack's depth coordinate
- *
- * @param rackCoordinate - The 3D coordinate of the rack [x, y, z]
- * @param itemPosition - The logical grid position of the item {x, y}
- * @returns The calculated 3D coordinate [x, y, z] for the item in the scene
- *
- * @example
- * const itemPos = calculateItemPosition([-5, 0, -5], { x: 1, y: 1 });
- * // Returns: [-4.6, 0.9, -5]
+ * Calculate 3D position of item on rack shelf
+ * @param rackCoordinate - Base coordinate of rack [x, y, z]
+ * @param itemPosition - Grid position {x: column (0-2), y: shelf (1-3)}
+ * @returns 3D position [x, y, z] for the item
  */
 export function calculateItemPosition(
-  rackCoordinate: Coordinate3D,
-  itemPosition: ItemPosition
-): Coordinate3D {
-  const x = rackCoordinate[0] + itemPosition.x * 0.4 - 0.4;
-  const y = itemPosition.y * 0.6 + 0.3;
-  const z = rackCoordinate[2];
-
-  return [x, y, z];
+  rackCoordinate: [number, number, number],
+  itemPosition: { x: number; y: number }
+): [number, number, number] {
+  const [rackX, rackY, rackZ] = rackCoordinate;
+  
+  // Map logical shelf numbers (1-3) to actual 3D heights
+  const shelfHeights: Record<number, number> = {
+    0: 0.35,  // Shelf 0 (rarely used)
+    1: 0.85,  // Shelf 1 (bottom) - matches data y=1
+    2: 1.35,  // Shelf 2 (middle) - matches data y=2
+    3: 1.85   // Shelf 3 (top) - matches data y=3
+  };
+  
+  // Calculate column position (0, 1, 2 → left, center, right)
+  // Rack is 2.0 units wide, columns spaced at 0.65 apart
+  const columnOffset = (itemPosition.x - 1) * 0.65;
+  
+  return [
+    rackX + columnOffset,                    // X: rack base + column offset
+    shelfHeights[itemPosition.y] || 0.85,    // Y: shelf height
+    rackZ                                     // Z: same as rack depth
+  ];
 }
