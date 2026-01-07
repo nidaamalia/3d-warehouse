@@ -10,7 +10,10 @@ interface WarehouseStore {
   hoveredItem: string | null;
 
   loadData: () => Promise<void>;
-  toggleFilter: (condition: ItemCondition) => void;
+  toggleFilter: (condition: ItemCondition | string) => void;
+  setActiveFilters: (filters: ItemCondition[]) => void;
+  clearFilters: () => void;
+  selectAllFilters: () => void;
   setHoveredItem: (serialNo: string | null) => void;
 }
 
@@ -38,12 +41,24 @@ export const useWarehouseStore = create<WarehouseStore>()(
         }
       },
 
-      toggleFilter: (condition: ItemCondition) => {
+      toggleFilter: (condition: ItemCondition | string) => {
         set((state) => ({
-          activeFilters: state.activeFilters.includes(condition)
+          activeFilters: state.activeFilters.includes(condition as ItemCondition)
             ? state.activeFilters.filter((c) => c !== condition)
-            : [...state.activeFilters, condition],
+            : [...state.activeFilters, condition as ItemCondition],
         }));
+      },
+
+      setActiveFilters: (filters) => {
+        set({ activeFilters: filters });
+      },
+
+      clearFilters: () => {
+        set({ activeFilters: [] });
+      },
+
+      selectAllFilters: () => {
+        set({ activeFilters: ["Good", "Damage", "Quarantine", "Scrap"] });
       },
 
       setHoveredItem: (serialNo: string | null) => {

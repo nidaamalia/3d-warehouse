@@ -1,9 +1,11 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Text } from '@react-three/drei';
 import RackStructure from './RackStructure';
 import Item from './Item';
 import { calculateItemPosition } from '@/lib/utils';
+import { useWarehouseStore } from '@/store/warehouseStore';
 import type { Item as ItemType } from '@/types/warehouse';
 
 interface RackProps {
@@ -13,10 +15,16 @@ interface RackProps {
 }
 
 /**
- * Complete rack component with structure, label, and items
- * Positions a rack at a specific 3D coordinate and displays its name as a label
+ * Rack component with client-side item filtering
+ * Filters items based on active condition filters from store
  */
 export default function Rack({ name, position, items }: RackProps) {
+  const activeFilters = useWarehouseStore((state) => state.activeFilters);
+
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => activeFilters.includes(item.condition));
+  }, [items, activeFilters]);
+
   return (
     // @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime
     <group position={position}>
@@ -36,8 +44,8 @@ export default function Rack({ name, position, items }: RackProps) {
       {/* Rack Structure */}
       <RackStructure />
 
-      {/* Items on Rack */}
-      {items.map((item) => {
+      {/* Items on Rack - filtered by active conditions */}
+      {filteredItems.map((item) => {
         const itemPosition = calculateItemPosition(item.position);
         return (
           <Item
