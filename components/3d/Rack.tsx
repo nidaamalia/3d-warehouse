@@ -6,6 +6,7 @@ import RackStructure from './RackStructure';
 import Item from './Item';
 import { calculateItemPosition } from '@/lib/utils';
 import { useWarehouseStore } from '@/store/warehouseStore';
+import { useTheme } from '@/contexts/ThemeContext';
 import type { Item as ItemType } from '@/types/warehouse';
 
 interface RackProps {
@@ -20,6 +21,10 @@ interface RackProps {
  */
 export default function Rack({ name, position, items }: RackProps) {
   const activeFilters = useWarehouseStore((state) => state.activeFilters);
+  const { theme } = useTheme();
+
+  const textColor = theme === 'dark' ? '#ffffff' : '#000000';
+  const outlineColor = theme === 'dark' ? '#000000' : '#ffffff';
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => activeFilters.includes(item.condition));
@@ -33,11 +38,11 @@ export default function Rack({ name, position, items }: RackProps) {
         <Text
           position={[0, 2.5, 0]}
           fontSize={0.3}
-          color="#e2e8f0"
+          color={textColor}
           anchorY="bottom"
           anchorX="center"
-          outlineWidth={0.01}
-          outlineColor="#1e293b"
+          outlineWidth={0.05}
+          outlineColor={outlineColor}
         >
           {name}
         </Text>
