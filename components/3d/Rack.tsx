@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Text } from '@react-three/drei';
+import { Text, Billboard } from '@react-three/drei';
 import RackStructure from './RackStructure';
 import Item from './Item';
 import { calculateItemPosition } from '@/lib/utils';
@@ -28,18 +28,20 @@ export default function Rack({ name, position, items }: RackProps) {
   return (
     // @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime
     <group position={position}>
-      {/* Rack Label */}
-      <Text
-        position={[0, 2.5, 0]}
-        fontSize={0.3}
-        color="#e2e8f0"
-        anchorY="bottom"
-        anchorX="center"
-        outlineWidth={0.01}
-        outlineColor="#1e293b"
-      >
-        {name}
-      </Text>
+      {/* Rack Label - Always faces camera */}
+      <Billboard>
+        <Text
+          position={[0, 2.5, 0]}
+          fontSize={0.3}
+          color="#e2e8f0"
+          anchorY="bottom"
+          anchorX="center"
+          outlineWidth={0.01}
+          outlineColor="#1e293b"
+        >
+          {name}
+        </Text>
+      </Billboard>
 
       {/* Rack Structure */}
       <RackStructure />
