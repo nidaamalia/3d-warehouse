@@ -1,9 +1,9 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
- 
+import { resolve } from 'node:path';
+
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react()],
   test: {
     environment: 'happy-dom',
     globals: true,
@@ -21,6 +21,11 @@ export default defineConfig({
         '**/*.d.ts',
         '**/components/3d/**', // Skip 3D components
       ],
+    },
+  },
+  resolve: {
+    alias: {
+      '@': resolve(import.meta.dirname, './'),
     },
   },
 });
