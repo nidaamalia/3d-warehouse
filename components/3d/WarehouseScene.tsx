@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, Stats } from '@react-three/drei';
 import { useTheme } from '@/contexts/ThemeContext';
 import Lights from './Lights';
 import Ground from './Ground';
@@ -130,6 +130,8 @@ export default function WarehouseScene() {
       <VehicleGroup />
       
       <DebugHelpers />
+      
+      <Stats className="stats-bottom-left" />
     </Canvas>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Stats } from '@react-three/drei';
 import { useWarehouseStore } from '@/store/warehouseStore';
 import { useTheme } from '@/contexts/ThemeContext';
 import WarehouseScene from '@/components/3d/WarehouseScene';
