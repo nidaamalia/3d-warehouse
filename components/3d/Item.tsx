@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Html } from '@react-three/drei';
 
 interface ItemProps {
@@ -17,7 +17,7 @@ interface ItemProps {
  * 3D representation of a warehouse item with hover effects
  * Shows visual feedback and prepares tooltip data on hover
  */
-export default function Item({ 
+function Item({ 
   serialNo, 
   lot, 
   description, 
@@ -96,3 +96,5 @@ export default function Item({
     </mesh>
   );
 }
+
+export default memo(Item);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, memo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Group, Vector3 } from 'three';
 
@@ -23,7 +23,7 @@ function calculateDistance(
 /**
  * Animated forklift vehicle with visible fork prongs
  */
-export default function Vehicle({ path, color, speed = 1 }: VehicleProps) {
+function Vehicle({ path, color, speed = 1 }: VehicleProps) {
   const groupRef = useRef<Group>(null);
   const [currentSegment, setCurrentSegment] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -146,3 +146,5 @@ export default function Vehicle({ path, color, speed = 1 }: VehicleProps) {
     </group>
   );
 }
+
+export default memo(Vehicle);
