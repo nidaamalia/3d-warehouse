@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.0",
@@ -30,9 +34,12 @@
     "@vitest/ui": "^4.0.16",
     "eslint": "^8",
     "eslint-config-next": "^14.2.0",
+    "happy-dom": "^20.1.0",
     "jsdom": "^27.4.0",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "vite-tsconfig-paths": "^6.0.3",
     "vitest": "^4.0.16"
-  }
+  },
+  "type": "module"
 }
