@@ -27,6 +27,7 @@ function Vehicle({ path, color, speed = 1 }: VehicleProps) {
   const groupRef = useRef<Group>(null);
   const [currentSegment, setCurrentSegment] = useState(0);
   const [progress, setProgress] = useState(0);
+  const targetRotation = useRef(0);
 
   useFrame((state, delta) => {
     if (!groupRef.current || path.length < 2) return;
@@ -72,7 +73,18 @@ function Vehicle({ path, color, speed = 1 }: VehicleProps) {
     ).normalize();
 
     const angle = Math.atan2(direction.x, direction.z);
-    groupRef.current.rotation.y = angle;
+    
+    // Handle angle wrapping for smooth rotation
+    let angleDiff = angle - targetRotation.current;
+    if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+    if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+    
+    // Smooth rotation interpolation
+    const rotationSpeed = 5; // Adjust for smoother/faster rotation
+    targetRotation.current += angleDiff * rotationSpeed * delta;
+    
+    // Apply the smoothed rotation
+    groupRef.current.rotation.y = targetRotation.current;
 
     setProgress(newProgress);
     setCurrentSegment(newSegment);
