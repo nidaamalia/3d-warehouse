@@ -1,11 +1,16 @@
 'use client';
 
+import { useTheme } from '@/contexts/ThemeContext';
+
 /**
  * Physical 3D structure of a storage rack
  * Dimensions: 2.0 x 2.0 x 1.5 units (W x H x D)
  * Accommodates 3 columns (x: 0, 1, 2) of items
+ * Theme-aware colors for light and dark modes
  */
 export default function RackStructure() {
+  const { theme } = useTheme();
+
   // Post positions (corners of 2.0 x 1.5 footprint)
   const postPositions: [number, number, number][] = [
     [-1.0, 1, 0.75],   // Front-left
@@ -22,6 +27,10 @@ export default function RackStructure() {
     [0, 1.8, 0],  // Shelf 3 (top)
   ];
 
+  const isDark = theme === 'dark';
+  const postColor = isDark ? '#64748b' : '#78909c';
+  const shelfColor = isDark ? '#475569' : '#90a4ae';
+
   return (
     <>
       {/* Vertical Posts (4 corners) */}
@@ -36,7 +45,7 @@ export default function RackStructure() {
           {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
           <boxGeometry args={[0.1, 2, 0.1]} />
           {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
-          <meshStandardMaterial color="#64748b" metalness={0.3} roughness={0.7} />
+          <meshStandardMaterial color={postColor} metalness={0.3} roughness={0.7} />
         </mesh>
       ))}
 
@@ -52,7 +61,7 @@ export default function RackStructure() {
           {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
           <boxGeometry args={[2.0, 0.05, 1.5]} />
           {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
-          <meshStandardMaterial color="#475569" metalness={0.1} roughness={0.8} />
+          <meshStandardMaterial color={shelfColor} metalness={0.1} roughness={0.8} />
         </mesh>
       ))}
     </>

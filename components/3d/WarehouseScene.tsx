@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Stats } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
+import { useTheme } from '@/contexts/ThemeContext';
 import Lights from './Lights';
 import Ground from './Ground';
 import RackGroup from './RackGroup';
@@ -21,6 +22,7 @@ import DebugHelpers from './DebugHelpers';
  * - Shadow rendering
  * - Orbit controls for user interaction
  * - Scene lighting and ground plane
+ * - Theme-aware background colors
  * 
  * The component uses React Three Fiber to manage the Three.js scene and
  * provides an interactive 3D environment for warehouse visualization.
@@ -28,6 +30,16 @@ import DebugHelpers from './DebugHelpers';
 export default function WarehouseScene() {
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const { theme } = useTheme();
+  const glRef = useRef<any>(null);
+
+  useEffect(() => {
+    // Update clear color when theme changes without re-rendering canvas
+    if (glRef.current) {
+      const bgColor = theme === 'dark' ? '#1a1f2e' : '#f5f5f5';
+      glRef.current.setClearColor(bgColor, 1);
+    }
+  }, [theme]);
 
   useEffect(() => {
     // console.log('WarehouseScene mounted');
@@ -36,12 +48,15 @@ export default function WarehouseScene() {
     };
   }, []);
 
+  const bgColor = theme === 'dark' ? '#1a1f2e' : '#f5f5f5';
+  const errorBgClass = theme === 'dark' ? 'bg-slate-950' : 'bg-slate-100';
+
   if (error) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-slate-950">
+      <div className={`w-full h-full flex items-center justify-center ${errorBgClass}`}>
         <div className="text-center">
-          <p className="text-red-400 font-semibold">3D Canvas Error</p>
-          <p className="text-gray-400 text-sm mt-2">{error}</p>
+          <p className={theme === 'dark' ? 'text-red-400' : 'text-red-600'} style={{ fontWeight: 'bold' }}>3D Canvas Error</p>
+          <p className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>{error}</p>
           <button
             onClick={() => {
               setError(null);
@@ -76,7 +91,8 @@ export default function WarehouseScene() {
       onCreated={(state) => {
         // console.log('Canvas created successfully');
         const canvas = state.gl.domElement as HTMLCanvasElement;
-        state.gl.setClearColor('#2d3748', 1);
+        glRef.current = state.gl;
+        state.gl.setClearColor(bgColor, 1);
         
         canvas.addEventListener('webglcontextlost', (event) => {
           // console.warn('WebGL context lost - attempting recovery');
@@ -114,8 +130,6 @@ export default function WarehouseScene() {
       <VehicleGroup />
       
       <DebugHelpers />
-      
-      <Stats />
     </Canvas>
   );
 }

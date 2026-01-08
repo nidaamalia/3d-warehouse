@@ -43,10 +43,19 @@ function FilterToolbar() {
   }, [racks]);
 
   return (
-    <div className="absolute top-6 right-6 bg-slate-900/95 backdrop-blur-md rounded-xl p-5 shadow-2xl border border-slate-700/50 z-10 w-72 max-h-96 overflow-y-auto">
+    <div className="absolute top-6 right-6 backdrop-blur-md rounded-xl p-5 shadow-2xl z-10 w-72 max-h-96 overflow-y-auto"
+      style={{
+        backgroundColor: 'var(--surface)',
+        borderColor: 'var(--border)',
+        borderWidth: '1px'
+      }}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-slate-100 font-bold text-base">Item Condition</h3>
-        <span className="text-slate-400 text-xs bg-slate-800/50 px-2.5 py-1 rounded-full">
+        <h3 className="font-bold text-base" style={{ color: 'var(--foreground)' }}>Item Condition</h3>
+        <span className="text-xs px-2.5 py-1 rounded-full" 
+          style={{
+            color: 'var(--secondary)',
+            backgroundColor: 'var(--background)'
+          }}>
           {activeFilters.length} / {conditions.length}
         </span>
       </div>
@@ -61,24 +70,39 @@ function FilterToolbar() {
               key={condition.name}
               className={`flex items-center gap-3 cursor-pointer p-2.5 rounded-lg transition-all duration-200 ${
                 isActive 
-                  ? 'bg-slate-800/60 border border-slate-600/50' 
-                  : 'hover:bg-slate-800/30 border border-transparent'
+                  ? 'border' 
+                  : 'hover:opacity-80 border border-transparent'
               }`}
+              style={{
+                backgroundColor: isActive ? 'var(--background)' : 'transparent',
+                borderColor: isActive ? 'var(--border)' : 'transparent'
+              }}
             >
               <input
                 type="checkbox"
                 checked={isActive}
                 onChange={() => toggleFilter(condition.name)}
-                className="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer accent-blue-500"
+                className="w-4 h-4 rounded cursor-pointer accent-blue-500"
+                style={{
+                  borderColor: 'var(--border)',
+                  accentColor: 'var(--primary)'
+                }}
               />
               <div
-                className="w-4 h-4 rounded border border-slate-500 flex-shrink-0"
-                style={{ backgroundColor: condition.color }}
+                className="w-4 h-4 rounded border flex-shrink-0"
+                style={{ 
+                  backgroundColor: condition.color,
+                  borderColor: condition.color
+                }}
               />
-              <span className="text-slate-300 text-sm flex-1 font-medium">
+              <span className="text-sm flex-1 font-medium" style={{ color: 'var(--foreground)' }}>
                 {condition.name}
               </span>
-              <span className="text-slate-500 text-xs bg-slate-800/50 px-2 py-0.5 rounded">
+              <span className="text-xs px-2 py-0.5 rounded" 
+                style={{
+                  color: 'var(--secondary)',
+                  backgroundColor: 'var(--background)'
+                }}>
                 {count}
               </span>
             </label>
@@ -86,16 +110,27 @@ function FilterToolbar() {
         })}
       </div>
 
-      <div className="flex gap-2.5 pt-4 border-t border-slate-700/50">
+      <div className="flex gap-2.5 pt-4" style={{ borderTopColor: 'var(--border)', borderTopWidth: '1px' }}>
         <button
           onClick={selectAllFilters}
-          className="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors duration-200 active:scale-95"
+          className="flex-1 px-3 py-2 text-white text-xs font-semibold rounded-lg transition-colors duration-200 active:scale-95"
+          style={{ backgroundColor: 'var(--primary)' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
         >
           Select All
         </button>
         <button
           onClick={clearFilters}
-          className="flex-1 px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg transition-colors duration-200 active:scale-95"
+          className="flex-1 px-3 py-2 text-xs font-semibold rounded-lg transition-colors duration-200 active:scale-95"
+          style={{
+            backgroundColor: 'var(--background)',
+            color: 'var(--foreground)',
+            borderColor: 'var(--border)',
+            borderWidth: '1px'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
         >
           Clear All
         </button>

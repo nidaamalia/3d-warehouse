@@ -26,11 +26,7 @@ export default function RouteGroup() {
             key={`route-${route.name}`}
             points={closedPath}
             color={route.color}
-            lineWidth={3}
-            dashed={true}
-            dashScale={50}
-            dashSize={0.5}
-            gapSize={0.3}
+            lineWidth={8}
           />
         );
       })}
