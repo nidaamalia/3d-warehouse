@@ -11,10 +11,6 @@ const conditions: Array<{ name: ItemCondition; color: string }> = [
   { name: 'Scrap', color: '#000000' },
 ];
 
-/**
- * Filter toolbar for controlling item visibility by condition
- * Shows item counts and provides quick filter controls
- */
 function FilterToolbar() {
   const activeFilters = useWarehouseStore((state) => state.activeFilters);
   const toggleFilter = useWarehouseStore((state) => state.toggleFilter);
@@ -22,7 +18,6 @@ function FilterToolbar() {
   const clearFilters = useWarehouseStore((state) => state.clearFilters);
   const racks = useWarehouseStore((state) => state.data?.racks ?? []);
 
-  // Calculate item counts per condition
   const itemCounts = useMemo(() => {
     const counts: Record<string, number> = {
       Good: 0,
@@ -42,98 +37,65 @@ function FilterToolbar() {
     return counts;
   }, [racks]);
 
+  const isAllSelected = activeFilters.length === conditions.length;
+  const hasIndividualFilters = activeFilters.length > 0 && activeFilters.length < conditions.length;
+
+  const handleAllItemsClick = () => {
+    if (isAllSelected) {
+      clearFilters();
+    } else {
+      selectAllFilters();
+    }
+  };
+
+  const handleConditionClick = (condition: ItemCondition) => {
+    if (isAllSelected) {
+      // If all items are selected, clicking a condition should show only that condition
+      useWarehouseStore.setState({ activeFilters: [condition] });
+    } else {
+      // Otherwise, toggle the condition
+      toggleFilter(condition);
+    }
+  };
+
   return (
-    <div className="absolute top-6 right-6 backdrop-blur-md rounded-xl p-5 shadow-2xl z-10 w-72 max-h-96 overflow-y-auto"
+    <div className="absolute top-6 right-6 rounded-2xl shadow-xl z-10 w-64 overflow-hidden"
       style={{
         backgroundColor: 'var(--surface)',
         borderColor: 'var(--border)',
         borderWidth: '1px'
       }}>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-bold text-base" style={{ color: 'var(--foreground)' }}>Item Condition</h3>
-        <span className="text-xs px-2.5 py-1 rounded-full" 
-          style={{
-            color: 'var(--secondary)',
-            backgroundColor: 'var(--background)'
-          }}>
-          {activeFilters.length} / {conditions.length}
-        </span>
+      <div className="px-6 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
+        <h3 className="font-bold text-sm tracking-wide uppercase" style={{ color: 'var(--foreground)' }}>Item Condition</h3>
       </div>
-
-      <div className="space-y-2.5 mb-4">
-        {conditions.map((condition) => {
-          const isActive = activeFilters.includes(condition.name);
-          const count = itemCounts[condition.name] || 0;
-          
-          return (
-            <label
-              key={condition.name}
-              className={`flex items-center gap-3 cursor-pointer p-2.5 rounded-lg transition-all duration-200 ${
-                isActive 
-                  ? 'border' 
-                  : 'hover:opacity-80 border border-transparent'
-              }`}
-              style={{
-                backgroundColor: isActive ? 'var(--background)' : 'transparent',
-                borderColor: isActive ? 'var(--border)' : 'transparent'
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={isActive}
-                onChange={() => toggleFilter(condition.name)}
-                className="w-4 h-4 rounded cursor-pointer accent-blue-500"
-                style={{
-                  borderColor: 'var(--border)',
-                  accentColor: 'var(--primary)'
-                }}
-              />
-              <div
-                className="w-4 h-4 rounded border flex-shrink-0"
-                style={{ 
-                  backgroundColor: condition.color,
-                  borderColor: condition.color
-                }}
-              />
-              <span className="text-sm flex-1 font-medium" style={{ color: 'var(--foreground)' }}>
-                {condition.name}
-              </span>
-              <span className="text-xs px-2 py-0.5 rounded" 
-                style={{
-                  color: 'var(--secondary)',
-                  backgroundColor: 'var(--background)'
-                }}>
-                {count}
-              </span>
-            </label>
-          );
-        })}
-      </div>
-
-      <div className="flex gap-2.5 pt-4" style={{ borderTopColor: 'var(--border)', borderTopWidth: '1px' }}>
+      
+      <div className="px-6 py-3 space-y-3">
         <button
-          onClick={selectAllFilters}
-          className="flex-1 px-3 py-2 text-white text-xs font-semibold rounded-lg transition-colors duration-200 active:scale-95"
-          style={{ backgroundColor: 'var(--primary)' }}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
-        >
-          Select All
-        </button>
-        <button
-          onClick={clearFilters}
-          className="flex-1 px-3 py-2 text-xs font-semibold rounded-lg transition-colors duration-200 active:scale-95"
+          onClick={handleAllItemsClick}
+          className="w-full flex items-center space-x-3 p-2.5 rounded-lg transition-colors hover:opacity-80"
           style={{
-            backgroundColor: 'var(--background)',
-            color: 'var(--foreground)',
-            borderColor: 'var(--border)',
-            borderWidth: '1px'
+            backgroundColor: isAllSelected ? 'rgba(148, 163, 184, 0.3)' : 'transparent'
           }}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
         >
-          Clear All
+          <span className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>All Items</span>
         </button>
+
+        {conditions.map(({ name, color }) => (
+          <button
+            key={name}
+            onClick={() => handleConditionClick(name)}
+            className="w-full flex items-center space-x-3 p-2.5 rounded-lg transition-colors hover:opacity-80"
+            style={{
+              backgroundColor: !isAllSelected && activeFilters.includes(name) ? 'rgba(148, 163, 184, 0.3)' : 'transparent'
+            }}
+          >
+            <div
+              className="w-3 h-3 rounded-full flex-shrink-0"
+              style={{ backgroundColor: color }}
+            />
+            <span className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>{name}</span>
+          </button>
+        ))}
       </div>
     </div>
   );
