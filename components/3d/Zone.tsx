@@ -16,7 +16,7 @@ interface ZoneProps {
 export default function Zone({ name, position, dimensions, color }: ZoneProps) {
   const [width, depth] = dimensions;
 
-  console.log(`Zone "${name}": width=${width}, depth=${depth}, color=${color}, position=${JSON.stringify(position)}`);
+  // console.log(`Zone "${name}": width=${width}, depth=${depth}, color=${color}, position=${JSON.stringify(position)}`);
 
   return (
     // @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime

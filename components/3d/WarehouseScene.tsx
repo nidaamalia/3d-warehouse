@@ -7,6 +7,8 @@ import Lights from './Lights';
 import Ground from './Ground';
 import RackGroup from './RackGroup';
 import ZoneGroup from './ZoneGroup';
+import RouteGroup from './RouteGroup';
+import VehicleGroup from './VehicleGroup';
 import DebugHelpers from './DebugHelpers';
 
 /**
@@ -28,9 +30,9 @@ export default function WarehouseScene() {
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    console.log('WarehouseScene mounted');
+    // console.log('WarehouseScene mounted');
     return () => {
-      console.log('WarehouseScene unmounted');
+      // console.log('WarehouseScene unmounted');
     };
   }, []);
 
@@ -72,17 +74,17 @@ export default function WarehouseScene() {
         depth: true,
       } as any}
       onCreated={(state) => {
-        console.log('Canvas created successfully');
+        // console.log('Canvas created successfully');
         const canvas = state.gl.domElement as HTMLCanvasElement;
         state.gl.setClearColor('#2d3748', 1);
         
         canvas.addEventListener('webglcontextlost', (event) => {
-          console.warn('WebGL context lost - attempting recovery');
+          // console.warn('WebGL context lost - attempting recovery');
           event.preventDefault();
         });
         
-        canvas.addEventListener('webglcontextrestored', () => {
-          console.log('WebGL context restored');
+          canvas.addEventListener('webglcontextrestored', () => {
+          // console.log('WebGL context restored');
         });
       }}
       onError={(error: any) => {
@@ -106,6 +108,10 @@ export default function WarehouseScene() {
       <RackGroup />
       
       <ZoneGroup />
+      
+      <RouteGroup />
+      
+      <VehicleGroup />
       
       <DebugHelpers />
       
