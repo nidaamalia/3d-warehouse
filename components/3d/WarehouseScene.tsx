@@ -6,6 +6,7 @@ import { OrbitControls, Stats } from '@react-three/drei';
 import Lights from './Lights';
 import Ground from './Ground';
 import RackGroup from './RackGroup';
+import ZoneGroup from './ZoneGroup';
 import DebugHelpers from './DebugHelpers';
 
 /**
@@ -97,12 +98,14 @@ export default function WarehouseScene() {
         dampingFactor={0.05}
         minDistance={5}
         maxDistance={50}
-        maxPolarAngle={Math.PI / 2.2}
+        maxPolarAngle={Math.PI / 2.1}
       />
       
       <Ground />
       
       <RackGroup />
+      
+      <ZoneGroup />
       
       <DebugHelpers />
       
