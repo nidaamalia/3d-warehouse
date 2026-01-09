@@ -20,7 +20,7 @@ interface WarehouseStore {
 export const useWarehouseStore = create<WarehouseStore>()(
   devtools(
     (set) => ({
-      data: null,
+      data: null as WarehouseData | null,
       isLoading: false,
       error: null,
       activeFilters: ["Good", "Damage", "Quarantine", "Scrap"],
