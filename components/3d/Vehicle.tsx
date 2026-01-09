@@ -106,6 +106,7 @@ function Vehicle({ path, color, speed = 1 }: VehicleProps) {
           emissive={color}
           emissiveIntensity={0.2}
         />
+      {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       </mesh>
 
       {/* Cabin/Roof */}
@@ -115,6 +116,7 @@ function Vehicle({ path, color, speed = 1 }: VehicleProps) {
         <boxGeometry args={[0.4, 0.15, 0.3]} />
         {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
         <meshStandardMaterial color="#333333" />
+      {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       </mesh>
 
       {/* Fork Prongs - LEFT */}
@@ -128,6 +130,7 @@ function Vehicle({ path, color, speed = 1 }: VehicleProps) {
           metalness={0.8}
           roughness={0.2}
         />
+      {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       </mesh>
 
       {/* Fork Prongs - RIGHT */}
@@ -141,6 +144,7 @@ function Vehicle({ path, color, speed = 1 }: VehicleProps) {
           metalness={0.8}
           roughness={0.2}
         />
+      {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       </mesh>
 
       {/* Fork base/connector */}
@@ -154,7 +158,9 @@ function Vehicle({ path, color, speed = 1 }: VehicleProps) {
           metalness={0.6}
           roughness={0.4}
         />
+      {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       </mesh>
+    {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
     </group>
   );
 }

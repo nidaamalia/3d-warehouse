@@ -25,6 +25,7 @@ export default function RackGroup() {
           items={rack.items}
         />
       ))}
+    {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
     </group>
   );
 }

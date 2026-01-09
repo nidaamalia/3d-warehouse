@@ -30,6 +30,7 @@ export default function RouteGroup() {
           />
         );
       })}
+    {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
     </group>
   );
 }

@@ -93,6 +93,7 @@ function Item({
           </div>
         </Html>
       )}
+    {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
     </mesh>
   );
 }

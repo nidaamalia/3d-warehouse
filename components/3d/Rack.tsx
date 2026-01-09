@@ -66,6 +66,7 @@ export default function Rack({ name, position, items }: RackProps) {
           />
         );
       })}
+    {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
     </group>
   );
 }

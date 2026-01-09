@@ -42,6 +42,7 @@ export default function Ground() {
           roughness={0.8}
           receiveShadow
         />
+      {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       </mesh>
 
       {/* Grid Helper Overlay - ENLARGED with more divisions */}

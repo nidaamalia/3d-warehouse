@@ -37,6 +37,7 @@ export default function Zone({ name, position, dimensions, color }: ZoneProps) {
           opacity={0.3}
           roughness={0.8}
         />
+      {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
       </mesh>
 
       {/* Billboard label - always faces camera */}
@@ -49,11 +50,11 @@ export default function Zone({ name, position, dimensions, color }: ZoneProps) {
           outlineColor={outlineColor}
           anchorX="center"
           anchorY="middle"
-          fontWeight="bold"
         >
           {name}
         </Text>
       </Billboard>
+    {/* @ts-expect-error - React Three Fiber extends JSX.IntrinsicElements at runtime */}
     </group>
   );
 }
